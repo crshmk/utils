@@ -1,1 +1,1 @@
-export { default as add } from './add'
+export { isPresent } from './isPresent'
