@@ -20,5 +20,6 @@ export default {
         resolve(),
         commonjs(),
         uglify()
-    ]
+    ],
+    external: ['ramda']
 }

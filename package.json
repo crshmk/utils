@@ -1,7 +1,7 @@
 {
-  "name": "rollup-boilerplate",
+  "name": "utils",
   "version": "1.0.0",
-  "description": "basic rollup setup",
+  "description": "My basic utilities that extend Ramda",
   "main": "./dist/utils.min.js",
   "type": "commonjs",
   "scripts": {
