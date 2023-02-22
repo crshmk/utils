@@ -15,11 +15,11 @@
  * -> [{ id: 1, val: 1 }, { id: 2, val: 42 }]
  */
 
-import { always, curry, map, propEq, when } from 'ramda'
+import { curry, map, mergeDeepLeft, propEq, when } from 'ramda'
 
 export const adjustBy = curry(propName => (item, list) => 
   map( 
-    when(propEq(propName, item[propName]), always(item))
-  , list
+    when(propEq(propName, item[propName]), mergeDeepLeft(item)), 
+    list
   )
 )
