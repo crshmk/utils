@@ -8,10 +8,7 @@ export default {
     output: {
         file: './dist/utils.min.js',
         format: 'cjs',
-        name: 'bundle',
-        globals: {
-            'ramda': 'r',
-        }
+        name: 'bundle'
     },
     plugins: [
         babel({
