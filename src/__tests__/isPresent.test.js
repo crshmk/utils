@@ -10,6 +10,9 @@ describe('isPresent', () => {
     expect(isPresent(null)).toBe(false)
     expect(isPresent(undefined)).toBe(false)
   })
+  test('considers bools non-empty', () => {
+    expect(isPresent(false)).toBe(true)
+  })
   test('identifies non-empty values', () => {
     expect(isPresent('a')).toBe(true)
     expect(isPresent(0)).toBe(true)
