@@ -9,7 +9,8 @@
     "test": "jest"
   },
   "keywords": [
-    "rollup"
+    "utils",
+    "ramda"
   ],
   "author": "Chris Hammock",
   "license": "ISC",
