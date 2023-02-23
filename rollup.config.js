@@ -18,5 +18,5 @@ export default {
         commonjs(),
         uglify()
     ],
-    external: ['ramda']
+    external: ['ramda', 'react']
 }
