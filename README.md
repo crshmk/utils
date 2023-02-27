@@ -343,16 +343,66 @@ const titles = `The Bends
 Ok Computer
 Kid A`
 
-nl2Br(titles)
+nl2br(titles)
 //['The Bends', <br />, 'Ok Computer', <br />, 'Kid A']  
 ```
 
-## notEmpty 
+### notEmpty 
 
 > * => Boolean
 
 ```javascript
 complement(isEmpty)
+```
+
+
+### prune 
+> [[String]] => {a} => {a}
+
+```javascript 
+const axiosErrorPaths = [
+  ['message'],
+  ['config', 'url'],
+  ['config', 'data'],
+  ['response', 'status'],
+  ['response', 'statusText'],
+  ['response', 'data']
+]
+
+const makeErrorResponse = prune(axiosErrorPaths)
+makeErrorResponse(axiosError)
+// {  
+//    message: 'Request failed with status code 502',
+//    config: {
+//      url: '/users',
+//      data: 'config data'
+//    },
+//    response: {
+//      status: 502,
+//      statusText: 'Bad Gateway',
+//      data: 'response data'
+//    }
+//  }
+```
+
+
+
+---
+etc
+---
+
+### log
+
+> a better console.log for Node using util.inspect 
+
+### scrollToSelector
+
+> String => Function
+
+```javascript
+const scrollToFirstInvalidField = scrollToSelector('.invalid')
+
+useEffect(scrollToFirstInvalidField, [invalidFields])
 ```
 
 ### stampToLabel
@@ -372,22 +422,4 @@ makeMonthDayLabel(timestamp)
 const makeMonthDayYearLabel = stampToLabel('mdy-')
 makeMonthDayYearLabel(timestamp)
 // '1-22-2023'
-```
-
----
-etc
----
-
-### log
-
-> a better console.log for Node using util.inspect 
-
-### scrollToSelector
-
-> String => Function
-
-```javascript
-const scrollToFirstInvalidField = scrollToSelector('.invalid')
-
-useEffect(scrollToFirstInvalidField, [invalidFields])
 ```
