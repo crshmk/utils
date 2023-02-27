@@ -76,7 +76,7 @@ const isSignupButtonShowing = allAbsent([user, signupToken])
 allPresent([['a'], { one: 1 }, 'a', 1])
 // true
 
-allPresent([[], { one: 1 }, 'a', 1]))
+allPresent([[], { one: 1 }, 'a', 1])
 // false
 ```
 
@@ -133,6 +133,37 @@ const onClickCheckbox = value => {
   const newSelections = appendOrRemove(value, selections)
   setSelections(newSelections)
 }
+```
+
+### flatPick 
+> [[String]] => {a} => {a}
+
+```javascript 
+const axiosErrorPaths = [
+  ['message'],
+  ['config', 'url'],
+  ['config', 'data'],
+  ['response', 'status'],
+  ['response', 'statusText'],
+  ['response', 'data']
+]
+
+const makeErrorResponse = flatPick(axiosErrorPaths)
+
+const onError = axiosError => {
+  const response = makeErrorResponse(axiosError)
+  return Promise.reject(response)
+}
+
+axios.interceptors.response.use(prop('data'), onError)
+// {
+//   message: 'Request failed with status code 502',
+//   url: '/users',
+//   data: 'config data',
+//   status: 502,
+//   statusText: 'Bad Gateway',
+//   response_data: 'response data'
+// }
 ```
 
 ### getQueryParams
