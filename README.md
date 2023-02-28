@@ -440,10 +440,6 @@ snakeKeysToCamel(queryResult)
 etc
 ---
 
-### log
-
-> a better console.log for Node using util.inspect 
-
 ### scrollToSelector
 
 > String => Function
