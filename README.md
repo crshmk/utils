@@ -409,7 +409,32 @@ makeErrorResponse(axiosError)
 //  }
 ```
 
+### snakeToCamel
 
+> String => String 
+
+```javascript
+snakeToCamel('one_two_three')
+// oneTwoThree
+```
+
+```javascript
+const snakeKeysToCamel = mapKeys(snakeToCamel)
+
+const queryResult = {
+  user_id: 42,
+  given_name: '',
+  family_name: ''
+}
+
+snakeKeysToCamel(queryResult)
+// {
+//   userId: 42,
+//   givenName: '',
+//   familyName: ''
+// }
+
+```
 
 ---
 etc
