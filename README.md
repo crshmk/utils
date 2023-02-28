@@ -135,6 +135,30 @@ const onClickCheckbox = value => {
 }
 ```
 
+### camelToSnake 
+
+> String => String 
+
+```javascript
+camelToSnake('oneTwoThree')
+// 'one_two_three'
+```
+
+```javascript
+const camelKeysToSnake = mapKeys(camelToSnake)
+
+const user = {
+  familyName: '',
+  givenName: ''
+}
+
+const createUserQuery = camelKeysToSnake(user)
+// {
+//   family_name: '',
+//   given_name: ''
+// }
+```
+
 ### flatPick 
 > [[String]] => {a} => {a}
 
