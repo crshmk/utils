@@ -409,6 +409,37 @@ makeErrorResponse(axiosError)
 //  }
 ```
 
+### renameKeys 
+
+> {a} => {a} => {a}
+
+```javascript
+const guitar = {
+  guitarId: 42,
+  transduction: 'SH4',
+  config: {
+    transduction: true
+  },
+  make: 'Gibson'
+}
+
+const guitarKeyReplacements = {
+  guitarId: 'id',
+  transduction: 'pickups'
+}
+
+const renameGuitarKeys = renameKeys(guitarKeyReplacements)
+renameGuitarKeys(guitar)
+// {
+//   id: 42,
+//   pickups: 'SH4',
+//   config: {
+//     pickups: true
+//   },
+//   make: 'Gibson'
+// }
+```
+
 ### snakeToCamel
 
 > String => String 
