@@ -44,4 +44,15 @@ describe('mapKeys', () => {
     expect(toUpperKeys([])).toStrictEqual({})
     expect(toUpperKeys({})).toStrictEqual({})
   })
+  test('stops recursion when target object value is an array', () => {
+    const withArray = {
+      one: 1,
+      two: [{ one: 1, two: 2},{ one: 1, two: 2}]
+    }
+    const expected = {
+      ONE: 1,
+      TWO: [{ one: 1, two: 2},{ one: 1, two: 2}]
+    }
+    expect(toUpperKeys(withArray)).toStrictEqual(expected)  
+  })
  })

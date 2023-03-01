@@ -8,10 +8,13 @@ import { fromPairs, is, map, pipe, toPairs } from 'ramda'
 
 const isObject = is(Object)
 
-const transformKey = transform => 
-  ([k, v]) => !isObject(v) ? [transform(k), v] :
-    [transform(k), mapKeys(transform)(v)] 
+const recur = v => isObject(v) && !Array.isArray(v)
 
+const transformKey = transform => 
+  ([k, v]) => recur(v) ? 
+    [transform(k), mapKeys(transform)(v)] :
+    [transform(k), v]
+     
 export const mapKeys = transform => 
   pipe(
     toPairs,
