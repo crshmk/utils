@@ -409,6 +409,47 @@ makeErrorResponse(axiosError)
 //  }
 ```
 
+### removeBy 
+
+> String => {a} | primitive => [{a}] => [{a}]
+
+```javascript 
+const colors = [
+  { id: 1, color: 'red' },
+  { id: 2, color: 'green' },
+  { id: 3, color: 'blue' }, 
+  { id: 4, color: 'blue' }
+]
+   
+const removeById = removeBy('id')
+removeById({ id: 2, color: 'green' }, colors)
+// [{ id: 1, color: 'red' }, { id: 3, color: 'blue' }, { id: 4, color: 'blue' }]
+
+const removeBlueColor = removeBy('color', 'blue')
+removeBlueColor(colors)
+// [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
+```
+
+
+```javascript 
+// Guitars.js
+const removeById = removeBy('id')
+const removeByBrand = removeBy('brand')
+const removeGibsons = removeBy('brand', 'Gibson')
+
+const Guitars = () => {
+  const [guitars, setGuitars] = setState(fetchedGuitars)
+
+  const removeGuitar = guitar =>
+    setGuitars(removeById(guitar))
+
+  const removeBrand = brand =>
+    setGuitars(removeByBrand(brand))
+
+  const removeGibsonBrands = () => 
+    setGuitars(removeGibsons)
+```
+
 ### renameKeys 
 
 > {a} => {a} => {a}
