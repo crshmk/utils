@@ -508,6 +508,34 @@ snakeKeysToCamel(queryResult)
 
 ```
 
+### updateState 
+
+> ( [...args, currentState] -> newState ) => stateSetter => newState
+
+> curry state setters with transform functions 
+
+```javascript 
+const appendState = updateState(append)
+const adjustById = adjustBy('id')
+ 
+const Component = () => {
+  const [ints, setInts] = useState([1,2])
+  const [chars, setChars] = useState(['a', 'b'])
+  const [vals, setVals] = useState([{id: 1, val: 42}])
+
+  const addInt = appendState(setInts)
+  const addChar = appendState(setChars)
+  const updateVal = updateState(adjustById, setVals)
+	
+//... 
+addInt(3)
+// ints state becomes [1, 2, 3]
+addChar('c')
+// chars state becomes ['a', 'b', 'c']
+updateVal({id:1, val: 43})
+// vals state becomes [{id: 1, val: 42}]
+```
+
 ---
 etc
 ---
