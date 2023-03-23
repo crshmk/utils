@@ -1,4 +1,14 @@
-// returns an array of strings representing the route fragments, without the leading "/"
+/**
+  * returns an array of strings representing the route fragments, without the leading "/"
+  *
+  * @param window the window object 
+  * @return Array<String>
+  *
+  * @example 
+  *   'https://www.mesaboogie.com/en-US/Amp/?model=triple-rectifier'
+  *   getRouteFragments(window)
+  *   // ['en-US', 'Amp']
+*/ 
 import { 
   either, 
   isEmpty, 

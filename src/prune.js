@@ -1,3 +1,35 @@
+/**
+  * pluck potnetially nested props from an object
+  *
+  * @param Object 
+  * @return Object 
+  *
+  * @example 
+  *
+  *   const axiosErrorPaths = [
+  *     ['message'],
+  *     ['config', 'url'],
+  *     ['config', 'data'],
+  *     ['response', 'status'],
+  *     ['response', 'statusText'],
+  *     ['response', 'data']
+  *   ]
+  *
+  *   const makeErrorResponse = prune(axiosErrorPaths)
+  *   makeErrorResponse(axiosError)
+  *   // {  
+  *   //    message: 'Request failed with status code 502',
+  *   //    config: {
+  *   //      url: '/users',
+  *   //      data: 'config data'
+  *   //    },
+  *   //    response: {
+  *   //      status: 502,
+  *   //      statusText: 'Bad Gateway',
+  *   //      data: 'response data'
+  *   //    }
+  *   //  }
+  *   */
 import { curry, defaultTo, lensPath, set, view } from 'ramda'
 
 // set leaf nodes to null to preserve shape for JSON.stringify

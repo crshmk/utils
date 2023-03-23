@@ -1,3 +1,17 @@
+/**
+  * insert <br /> tags into a value intended for a text node 
+  *
+  * @param String 
+  * @param Array<String | <br />>
+  *
+  * @example 
+  *   const description = `top line  
+  *   second line 
+  *   thirdline` 
+  *
+  *   nl2br(description)
+  *   // ['top line', <br />, 'second line', <br />, 'third line'] 
+*/
 import React from 'react'
 
 import { filter, intersperse, map, pipe, split, trim } from 'ramda'
