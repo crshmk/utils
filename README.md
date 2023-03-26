@@ -1,14 +1,10 @@
-### My common Javascript utils
+### [Ramda](https://ramdajs.com/docs/) extensions 
 
 ```bash
 npm run build
 npm link 
 npm link utils
 ```
-
----
-[Ramda](https://ramdajs.com/docs/) extensions
----
 
 ### adjustBy
 
@@ -534,37 +530,4 @@ addChar('c')
 // chars state becomes ['a', 'b', 'c']
 updateVal({id:1, val: 43})
 // vals state becomes [{id: 1, val: 42}]
-```
-
----
-etc
----
-
-### scrollToSelector
-
-> String => Function
-
-```javascript
-const scrollToFirstInvalidField = scrollToSelector('.invalid')
-
-useEffect(scrollToFirstInvalidField, [invalidFields])
-```
-
-### stampToLabel
-
-> String => unixTimestampMilliseconds => String
-
-> Unless handling dates across time zones to the hour, date libraries are overkill. Some version of this is often fine.
-
-```javascript
-const timestamp = '1677104219000'
-
-const makeMonthDayLabel = stampToLabel('md')
-makeMonthDayLabel(timestamp)
-// '1/22'
-
-
-const makeMonthDayYearLabel = stampToLabel('mdy-')
-makeMonthDayYearLabel(timestamp)
-// '1-22-2023'
 ```
