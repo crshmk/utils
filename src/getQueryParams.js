@@ -1,18 +1,17 @@
 // takes the window
 // returns params as an object
 import { 
-  complement, 
-  filter, 
   fromPairs, 
   isNil, 
   map, 
   path, 
   pipe, 
+  reject,
   split, 
   tail 
 } from 'ramda'
 
-const removeEmptyQuery = filter(complement(isNil))
+const removeEmptyQuery = reject(isNil)
 
 export const getQueryParams = pipe(
   path(['location', 'search']),
@@ -22,6 +21,6 @@ export const getQueryParams = pipe(
   fromPairs,
   removeEmptyQuery,
   map(decodeURI)
-);
+)
 
 export default getQueryParams
