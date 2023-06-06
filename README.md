@@ -1,9 +1,7 @@
 ### [Ramda](https://ramdajs.com/docs/) extensions 
 
 ```bash
-npm run build
-npm link 
-npm link utils
+npm i crshmk/utils
 ```
 
 ### adjustBy
