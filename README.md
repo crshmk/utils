@@ -1,8 +1,8 @@
 ### [Ramda](https://ramdajs.com/docs/) extensions 
 
-```bash
-npm i crshmk/utils
-```
+Requires ramda version `<=0.28`, as `0.29` [breaks](https://github.com/ramda/ramda/pull/2938) `propEq`. 
+
+---
 
 ### adjustBy
 
