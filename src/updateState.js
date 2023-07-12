@@ -23,7 +23,7 @@
  *  addChar('c')
  *  // chars state becomes ['a', 'b', 'c']
  *  updateVal({id:1, val: 43})
- *  // vals state becomes [{id: 1, val: 42}]
+ *  // vals state becomes [{id: 1, val: 43}]
  */
 import { apply, curry } from 'ramda'
 

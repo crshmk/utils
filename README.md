@@ -521,9 +521,16 @@ snakeKeysToCamel(queryResult)
 
 ### updateState 
 
-> ( [...args, currentState] -> newState ) => stateSetter => newState
+> ( [...args, currentState] -> newState ) => stateSetter => [...args] => void
 
-> curry state setters with transform functions 
+curry state setters with transform functions 
+
+pass / curry: 
+- a transform function that takes the current state as its last argument and returns a modified state. You do not pass the state. 
+- the state setter 
+- arguments to be passed to the transform function before the current state
+
+You want to curry the first two args to create a declarative function that updates the state as a side effect.
 
 ```javascript 
 const appendState = updateState(append)
@@ -544,5 +551,5 @@ addInt(3)
 addChar('c')
 // chars state becomes ['a', 'b', 'c']
 updateVal({id:1, val: 43})
-// vals state becomes [{id: 1, val: 42}]
+// vals state becomes [{id: 1, val: 43}]
 ```
