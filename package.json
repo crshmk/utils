@@ -1,7 +1,8 @@
 {
-  "name": "utils",
+  "name": "ramjam",
   "version": "1.1.0",
-  "description": "Javascript utilities that extend Ramda",
+  "description": "Functional JavaScript utilities that extend Ramda",
+  "repository": "crshmk/utils",
   "main": "./dist/utils.min.js",
   "type": "commonjs",
   "scripts": {
@@ -10,9 +11,15 @@
   },
   "keywords": [
     "utils",
-    "ramda"
+    "ramda",
+    "functional",
+    "utilities",
+    "toolkit",
+    "fp",
+    "point-free",
+    "curried"
   ],
-  "author": "Chris Hammock",
+  "author": "Chris Hammock <chris@crshmk.com>",
   "license": "ISC",
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.18.6",
