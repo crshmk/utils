@@ -1,7 +1,5 @@
 ### [Ramda](https://ramdajs.com/docs/) extensions 
 
-Requires ramda version `<=0.28`, as `0.29` [breaks](https://github.com/ramda/ramda/pull/2938) `propEq`. 
-
 ---
 
 ### adjustBy
@@ -387,6 +385,10 @@ nl2br(titles)
 ```javascript
 complement(isEmpty)
 ```
+
+### propEq 
+
+> classic propEq before it was [broken](https://github.com/ramda/ramda/pull/2938) in `0.29`
 
 
 ### prune 

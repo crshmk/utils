@@ -23,7 +23,8 @@
  *     const newState = removeByColor('blue')
  *     -> [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
  */
-import { curry, propEq, propOr, reject } from 'ramda'
+import { curry, propOr, reject } from 'ramda'
+import { propEq } from './propEq'
 
 export const removeBy = curry((k, toRemove, items) => {
   const match = propOr(toRemove, k, toRemove)
