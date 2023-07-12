@@ -452,13 +452,13 @@ const Guitars = () => {
   const [guitars, setGuitars] = setState(fetchedGuitars)
 
   const removeGuitar = guitar =>
-    setGuitars(removeById(guitar))
+    setGuitars(removeById(guitar, guitars))
 
   const removeBrand = brand =>
-    setGuitars(removeByBrand(brand))
+    setGuitars(removeByBrand(brand, guitars))
 
   const removeGibsonBrands = () => 
-    setGuitars(removeGibsons)
+    setGuitars(removeGibsons(guitars))
 ```
 
 ### renameKeys 
