@@ -20,7 +20,7 @@
  * 
  * 
  *     const removeByColor = removeBy('color')
- *     const newState = removeByColor('blue')
+ *     const newState = removeByColor('blue', state)
  *     -> [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
  */
 import { curry, propOr, reject } from 'ramda'

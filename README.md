@@ -428,6 +428,8 @@ makeErrorResponse(axiosError)
 
 > String => {a} | primitive => [{a}] => [{a}]
 
+Remove collection items by matching key/value or value
+
 ```javascript 
 const colors = [
   { id: 1, color: 'red' },
