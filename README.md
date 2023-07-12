@@ -1,5 +1,9 @@
 ### [Ramda](https://ramdajs.com/docs/) extensions 
 
+```bash
+npm i ramjam
+```
+
 ---
 
 ### adjustBy
