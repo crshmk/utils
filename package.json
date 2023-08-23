@@ -1,6 +1,6 @@
 {
   "name": "ramjam",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Functional JavaScript utilities that extend Ramda",
   "repository": "crshmk/utils",
   "main": "./dist/utils.min.js",
@@ -34,6 +34,6 @@
     "rollup-plugin-uglify": "^6.0.4"
   },
   "peerDependencies": {
-    "react": ">=16.3.0"
+    "react": ">=18.2.0"
   }
 }

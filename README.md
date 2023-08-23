@@ -170,6 +170,20 @@ extendSum({ one: 1, two: 2 })
 // { one: 1, two: 2, sum: 3 }
 ```
 
+### first 
+> any => any 
+
+> for collections; returns an empty object when passed an empty array or anything other than an array
+
+```javascript
+first( [{one: 1}] )
+// {one: 1}
+first(null)
+// {}
+first([])
+// {}
+```
+
 ### flatPick 
 > [[String]] => {a} => {a}
 
