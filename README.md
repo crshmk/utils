@@ -136,16 +136,17 @@ const onClickCheckbox = value => {
 > stateSetter => item => void
 
 ```javascript
-const useUsers = () => {
-  const [users, setUsers] = useState([])
-  const addUser = appendState(setUsers)
-  return { addUser, users }
+const useInts = () => {
+  const [ints, setInts] = useState([1])
+  const addInt = appendState(setInts)
+  return { addInt, ints }
 }
 ```
 
 ```javascript 
-const { addUser } = useUsers() 
-addUser({ name: 'Jo' })
+const { addInt } = useInts() 
+addInt(2)
+// ints is now [1, 2]
 ```
 
 ### camelToSnake 
@@ -419,6 +420,25 @@ nl2br(titles)
 
 ```javascript
 complement(isEmpty)
+```
+
+### prependState 
+
+> stateSetter => item => void
+
+
+```javascript
+const useInts = () => {
+  const [ints, setInts] = useState([1])
+  const prependInt = prependState(setInts)
+  return { ints, prependInt }
+}
+```
+
+```javascript 
+const { ints, prependInt } = useInts() 
+prependInt(2)
+// ints is now [2, 1]
 ```
 
 ### propEq 

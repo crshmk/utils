@@ -6,11 +6,10 @@
  * @param {any} the appended item 
  * 
  * @example 
- *   const [users, setUsers] = useState([])
- *   const addUser = appendState(setUsers) 
- *   const newUser = { name: 'Jo' }
- *   addUser(newUser)
- *   // users is now [{ name: 'Jo' }]
+ *   const [ints, setInts] = useState([1])
+ *   const addInt = appendState(setInts) 
+ *   addInt(2)
+ *   // ints is now [1, 2]
  */
 import { append } from 'ramda'
 import { updateState } from './updateState'
