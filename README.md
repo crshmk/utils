@@ -131,6 +131,23 @@ const onClickCheckbox = value => {
 }
 ```
 
+### appendState 
+
+> stateSetter => item => void
+
+```javascript
+const useUsers = () => {
+  const [users, setUsers] = useState([])
+  const addUser = appendState(setUsers)
+  return { addUser, users }
+}
+```
+
+```javascript 
+const { addUser } = useUsers() 
+addUser({ name: 'Jo' })
+```
+
 ### camelToSnake 
 
 > String => String 
