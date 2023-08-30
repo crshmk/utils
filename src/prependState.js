@@ -1,4 +1,3 @@
-
 /**
  * curry state setter to prepend to state arrays 
  *

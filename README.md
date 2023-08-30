@@ -136,17 +136,17 @@ const onClickCheckbox = value => {
 > stateSetter => item => void
 
 ```javascript
-const useInts = () => {
-  const [ints, setInts] = useState([1])
-  const addInt = appendState(setInts)
-  return { addInt, ints }
+const usePedals = () => {
+  const [pedals, setPedals] = useState(['fuzz'])
+  const addPedal = appendState(setPedals)
+  return { addPedal, pedals }
 }
 ```
 
 ```javascript 
-const { addInt } = useInts() 
-addInt(2)
-// ints is now [1, 2]
+const { addPedal } = usePedals() 
+addPedal('delay')
+// pedals is now ['fuzz', 'delay']
 ```
 
 ### camelToSnake 
@@ -401,6 +401,26 @@ makeBillBoard(slug)
 // 'P-Funk Live in New York'
 ```
 
+### mergeState 
+
+> stateSetter => {a} => void
+
+```javascript 
+const useUser = () => {
+  const [user, setUser] = useState({})
+  const updateUser = mergeState(setUser)
+  return { updateUser, user }
+}
+```
+
+```javascript 
+const { updateUser } = useUser() 
+
+updateUser({ id: 1, age: 42 })
+updateUser({ age: 43, points: 2 })
+// user is now { id: 1, age: 43, points: 2 }
+```
+
 ### nl2br 
 
 > String => [String | br tag]
@@ -591,22 +611,48 @@ You want to curry the first two args to create a declarative function that updat
 
 ```javascript 
 const appendState = updateState(append)
-const adjustById = adjustBy('id')
- 
-const Component = () => {
-  const [ints, setInts] = useState([1,2])
-  const [chars, setChars] = useState(['a', 'b'])
-  const [vals, setVals] = useState([{id: 1, val: 42}])
+const mergeState = updateState(mergeDeepLeft)
+const updateStateById = updateState(adjustBy('id'))
 
-  const addInt = appendState(setInts)
-  const addChar = appendState(setChars)
-  const updateVal = updateState(adjustById, setVals)
-	
-//... 
-addInt(3)
-// ints state becomes [1, 2, 3]
-addChar('c')
-// chars state becomes ['a', 'b', 'c']
-updateVal({id:1, val: 43})
-// vals state becomes [{id: 1, val: 43}]
+const useGuitar = () => {
+  const [guitar, setGuitar] = useState({})
+  
+  const updateGuitar = mergeState(setGuitar)
+
+  return { guitar, updateGuitar }
+}
+
+const useUser = () => {
+  const [users, setUsers] = useState([])
+
+  const appendUser = appendState(setUsers)
+  const updateUser = updateStateById(setUsers)
+
+  return { appendUser, updateUser, user }
+}
+```
+
+```javascript 
+const { updateGuitar } = useGuitar()
+
+updateGuitar({ id: 1, status: 'new' })
+updateGuitar({ status: 'used', make: 'Gibson' })
+
+// guitar state becomes 
+// { id: 1, status: 'used', make: 'Gibson' }
+```
+
+```javascript 
+const { appendUser, updateUser } = useUsers()
+
+appendUser({ id: 1, age: 20 })
+appendUser({ id: 2, age: 30 })
+updateUser({ id: 2, age: 31 })
+
+// users state becomes 
+// [
+//   { id: 1, age: 20 },
+//   { id: 2, age: 31 }
+// ] 
+
 ```
