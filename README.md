@@ -499,32 +499,65 @@ const colors = [
 ]
    
 const removeById = removeBy('id')
-removeById({ id: 2, color: 'green' }, colors)
-// [{ id: 1, color: 'red' }, { id: 3, color: 'blue' }, { id: 4, color: 'blue' }]
+const itemToRemove = { id: 2, color: 'green' }
+// this matches { id: 2 }
+removeById(itemToRemove, colors)
+// [
+//   { id: 1, color: 'red' }, 
+//   { id: 3, color: 'blue' }, 
+//   { id: 4, color: 'blue' }
+// ]
 
-const removeBlueColor = removeBy('color', 'blue')
-removeBlueColor(colors)
-// [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
+const removeColor = removeBy('color')
+// this matches { color: 'blue' }
+removeColor('blue', colors)
+// [
+//   { id: 1, color: 'red' }, 
+//   { id: 2, color: 'green' }
+// ]
 ```
 
+### removeStateBy 
+
+> stateSetter => String => {a} | primitive => void
+
+Remove collection items in state by matching key/value or value
+
+The api is such that you just toss whatever object you have at the state to remove it 
 
 ```javascript 
-// Guitars.js
-const removeById = removeBy('id')
-const removeByBrand = removeBy('brand')
-const removeGibsons = removeBy('brand', 'Gibson')
+const fetchedGuitars = [
+  { id: 1, make: 'Gibson' },
+  { id: 2, make: 'Gibson' },
+  { id: 3, make: 'Fender' },
+  { id: 4, make: 'Fender' }
+]
 
-const Guitars = () => {
-  const [guitars, setGuitars] = setState(fetchedGuitars)
+const useGuitars = () => {
+  const [guitars, setGuitars] = useState(fetchedGuitars)
+  
+  const removeGuitarBy = removeStateBy(setGuitars)
+  const removeGuitar = removeGuitarBy('id')
+  const removeGuitarMake = removeGuitarBy('make')
 
-  const removeGuitar = guitar =>
-    setGuitars(removeById(guitar, guitars))
+  return { guitars, removeGuitar, removeGuitarMake }
+}
 
-  const removeBrand = brand =>
-    setGuitars(removeByBrand(brand, guitars))
+const { removeGuitar, removeGuitarMake } = useGuitars()
 
-  const removeGibsonBrands = () => 
-    setGuitars(removeGibsons(guitars))
+// this matches { id: 2 }
+removeGuitar({ id: 2, make: 'Gibson' })
+// guitars state becomes 
+// [
+//  { id: 1, make: 'Gibson' },
+//  { id: 3, make: 'Fender' },
+//  { id: 4, make: 'Fender' }
+// ]
+
+// this matches { make: 'Fender' }
+removeGuitarMake('Fender')
+// guitars state then becomes 
+// [{ id: 1, make: 'Gibson' }]
 ```
 
 ### renameKeys 

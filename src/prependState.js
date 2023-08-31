@@ -8,10 +8,10 @@
  *   const [ints, setInts] = useState([1])
  *   const prependInts = prependState(setInts) 
  *   prependInts(2)
- *   // ints is now [2, 1]
+ *   // ints state becomes [2, 1]
  * 
  *   prependInts([3, 4])
- *   // ints is now [3, 4, 2, 1]
+ *   // ints state becomes [3, 4, 2, 1]
  */
 import { concat, ifElse, is, prepend } from 'ramda'
 import { updateState } from './updateState'

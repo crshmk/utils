@@ -1,6 +1,6 @@
 /**
  * @param k String 
- * @param item String | Object 
+ * @param toRemove primitive | Object -> the key/value to match, e.g. { id: 1 }, or the value to match, e.g. 1 
  * @param items Array<Object>
  * @return Array<Object>
  * 

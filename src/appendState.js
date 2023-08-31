@@ -9,10 +9,10 @@
  *   const [ints, setInts] = useState([1])
  *   const addInts = appendState(setInts) 
  *   addInts(2)
- *   // ints is now [1, 2]
+ *   // ints state becomes [1, 2]
  *
  *   addInts([3, 4])
- *   // ints is now [1, 2, 3, 4]
+ *   // ints state becomes [1, 2, 3, 4]
  */
 import { append, concat, flip, ifElse, is } from 'ramda'
 import { updateState } from './updateState'
