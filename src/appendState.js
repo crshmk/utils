@@ -3,15 +3,23 @@
  * curry state setter to append to state arrays 
  *
  * @param {Function} setState the setter returned from setState 
- * @param {any} the appended item 
+ * @param {any} items the appended item or array of items
  * 
  * @example 
  *   const [ints, setInts] = useState([1])
- *   const addInt = appendState(setInts) 
- *   addInt(2)
+ *   const addInts = appendState(setInts) 
+ *   addInts(2)
  *   // ints is now [1, 2]
+ *
+ *   addInts([3, 4])
+ *   // ints is now [1, 2, 3, 4]
  */
-import { append } from 'ramda'
+import { append, concat, flip, ifElse, is } from 'ramda'
 import { updateState } from './updateState'
 
-export const appendState = updateState(append) 
+export const appendState = setState =>
+  ifElse(
+    is(Array),
+    updateState(flip(concat), setState),
+    updateState(append, setState)
+  )

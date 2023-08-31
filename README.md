@@ -135,18 +135,21 @@ const onClickCheckbox = value => {
 
 > stateSetter => item => void
 
+append an item or array of items onto state array
+
 ```javascript
 const usePedals = () => {
   const [pedals, setPedals] = useState(['fuzz'])
-  const addPedal = appendState(setPedals)
-  return { addPedal, pedals }
+  const addPedals = appendState(setPedals)
+  return { addPedals, pedals }
 }
 ```
 
 ```javascript 
-const { addPedal } = usePedals() 
-addPedal('delay')
-// pedals is now ['fuzz', 'delay']
+const { addPedals } = usePedals() 
+addPedals('delay')
+addPedals(['wah', 'phase'])
+// pedals is now ['fuzz', 'delay', 'wah', 'phase']
 ```
 
 ### camelToSnake 
