@@ -17,7 +17,7 @@
 
 import { curry, map, mergeDeepLeft, when } from 'ramda'
 import { propEq } from './propEq'
-export const adjustBy = curry(propName => (item, list) => 
+export const adjustBy = curry((propName, item, list) => 
   map( 
     when(propEq(propName, item[propName]), mergeDeepLeft(item)), 
     list
