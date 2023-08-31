@@ -1,6 +1,6 @@
 
 /**
- * curry state setter to append to state arrays 
+ * curry state setter to append item or array of items to state arrays 
  *
  * @param {Function} setState the setter returned from setState 
  * @param {any} items the appended item or array of items

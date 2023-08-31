@@ -10,42 +10,22 @@ npm i ramjam
 
 > String => {a} => [{a}] => [{a}]
 
+identify a collection item and merge updates
+
 ```javascript
 const adjustById = adjustBy('id')
 
-const state = [
-  { id: 1, x: 1, y: 5 },
-  { id: 2, x: 2, y: 6 }
+const items = [
+  { id: 1, x: 1, y: 1 },
+  { id: 2, x: 2, y: 2 }
 ]
 
 const update = { id: 2, x: 42 }
-adjustById(update, state)
+adjustById(update, items)
 // [
-//  { id: 1, x: 1, y: 5 },
-//  { id: 2, x: 42, y: 6 }
+//  { id: 1, x: 1, y: 1 },
+//  { id: 2, x: 42, y: 2 }
 //]
-```
-
-```javascript 
-  const fetchedGuitars = [
-    { id: 1, make: 'Gibson', model: 'Les Paul Standard' year: 1959 },
-    { id: 2, make: 'Gibson', model: 'Flying V' year: 1966 },
-    { id: 3, make: 'Fender', model: 'Telecaster' year: 1952 }
-  ] 
-  const [guitars, setGuitars] = useState(fetchedGuitars)
-
-  const updateGuitars = update => {
-    const newGuitars = adjustById(update)
-    setGuitars(newGuitars)
-  }
-
-  updateGuitars({ id: 2, year: 1967 })
-
-// [
-//   { id: 1, make: 'Gibson', model: 'Les Paul Standard' year: 1959 },
-//   { id: 2, make: 'Gibson', model: 'Flying V' year: 1967 },
-//   { id: 3, make: 'Fender', model: 'Telecaster' year: 1952 }
-//  ] 
 ```
 
 ### allAbsent
@@ -135,8 +115,9 @@ const onClickCheckbox = value => {
 
 > stateSetter => item => void
 
-append an item or array of items onto state array
+append item or array of items onto state array
 
+must be curried
 ```javascript
 const usePedals = () => {
   const [pedals, setPedals] = useState(['fuzz'])
@@ -148,8 +129,9 @@ const usePedals = () => {
 ```javascript 
 const { addPedals } = usePedals() 
 addPedals('delay')
+// pedals state becomes ['fuzz', 'delay']
 addPedals(['wah', 'phase'])
-// pedals is now ['fuzz', 'delay', 'wah', 'phase']
+// pedals state becomes ['fuzz', 'delay', 'wah', 'phase']
 ```
 
 ### camelToSnake 
@@ -291,9 +273,9 @@ const guitars = [
   { id: 3, make: 'Fender', pickup: 'Lace Sensor' }
 ]
 
-const getMakeOptions = getUniqValues('make')
+const getBrandOptions = getUniqValues('make')
 
-getMakeOptions(guitars)
+getBrandOptions(guitars)
 // ['Gibson', 'Fender']
 ```
 
@@ -449,19 +431,23 @@ complement(isEmpty)
 
 > stateSetter => item => void
 
+prepend item or array of items onto state array
 
+must be curried
 ```javascript
 const useInts = () => {
   const [ints, setInts] = useState([1])
-  const prependInt = prependState(setInts)
-  return { ints, prependInt }
+  const prependInts = prependState(setInts)
+  return { ints, prependInts }
 }
 ```
 
 ```javascript 
-const { ints, prependInt } = useInts() 
-prependInt(2)
-// ints is now [2, 1]
+const { ints, prependInts } = useInts() 
+prependInts(2)
+// ints state becomes [2, 1]
+prependInts([3, 4])
+// ints state becomes [3, 4, 2, 1]
 ```
 
 ### propEq 
@@ -605,17 +591,41 @@ snakeKeysToCamel(queryResult)
 
 curry state setters with transform functions 
 
-pass / curry: 
+pass: 
 - a transform function that takes the current state as its last argument and returns a modified state. You do not pass the state. 
 - the state setter 
 - arguments to be passed to the transform function before the current state
 
-You want to curry the first two args to create a declarative function that updates the state as a side effect.
+You must curry the first two args to create a declarative function that updates the state as a side effect.
 
 ```javascript 
 const appendState = updateState(append)
-const mergeState = updateState(mergeDeepLeft)
 const updateStateById = updateState(adjustBy('id'))
+
+const useUser = () => {
+  const [users, setUsers] = useState([])
+
+  const addUser = appendState(setUsers)
+  const updateUser = updateStateById(setUsers)
+
+  return { addUser, updateUser, user }
+}
+
+const { addUser, updateUser } = useUsers()
+
+addUser({ id: 1, age: 20 })
+addUser({ id: 2, age: 30 })
+updateUser({ id: 2, age: 31 })
+
+// users state becomes 
+// [
+//   { id: 1, age: 20 },
+//   { id: 2, age: 31 }
+// ] 
+```
+
+```javascript 
+const mergeState = updateState(mergeDeepLeft)
 
 const useGuitar = () => {
   const [guitar, setGuitar] = useState({})
@@ -625,17 +635,6 @@ const useGuitar = () => {
   return { guitar, updateGuitar }
 }
 
-const useUser = () => {
-  const [users, setUsers] = useState([])
-
-  const appendUser = appendState(setUsers)
-  const updateUser = updateStateById(setUsers)
-
-  return { appendUser, updateUser, user }
-}
-```
-
-```javascript 
 const { updateGuitar } = useGuitar()
 
 updateGuitar({ id: 1, status: 'new' })
@@ -646,16 +645,6 @@ updateGuitar({ status: 'used', make: 'Gibson' })
 ```
 
 ```javascript 
-const { appendUser, updateUser } = useUsers()
 
-appendUser({ id: 1, age: 20 })
-appendUser({ id: 2, age: 30 })
-updateUser({ id: 2, age: 31 })
-
-// users state becomes 
-// [
-//   { id: 1, age: 20 },
-//   { id: 2, age: 31 }
-// ] 
 
 ```
