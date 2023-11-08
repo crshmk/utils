@@ -618,6 +618,18 @@ snakeKeysToCamel(queryResult)
 
 ```
 
+### toggleState 
+
+```javascript 
+const [isActive, setIsActive] = useState(false)
+
+const toggleIsActive = toggleState(setIsActive)
+
+toggleIsActive()
+// isActive becomes true 
+
+```
+
 ### updateState 
 
 > ( [...args, currentState] -> newState ) => stateSetter => [...args] => void
@@ -677,7 +689,3 @@ updateGuitar({ status: 'used', make: 'Gibson' })
 // { id: 1, status: 'used', make: 'Gibson' }
 ```
 
-```javascript 
-
-
-```
