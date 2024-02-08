@@ -1,7 +1,7 @@
 /**
  * curry state setter to prepend item or array of items to state arrays 
  *
- * @param {Function} setState the setter returned from setState 
+ * @param {Function} setState the setter returned from useState 
  * @param {any} items the prepended item 
  * 
  * @example 

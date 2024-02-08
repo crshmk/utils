@@ -2,12 +2,13 @@
  * return the first item in a collection, or an empty object  
  *
  * @param {Array} 
+  *
  * @return {any} the first item or an empty object
  * 
  * @example 
  *   const users = [{ name: 'Jo' }]
  *   first(users)
- *   // -> { name: 'Jo' }] 
+ *   // -> { name: 'Jo' } 
  *
  *   first([])
  *   // -> {} 

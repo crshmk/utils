@@ -2,7 +2,7 @@
 /**
  * match state objects in a collection to remove them
  *
- * @param {Function} setState the setter returned from setState 
+ * @param {Function} setState the setter returned from useState 
  * @param {Object} . the appended item or array of items
  * 
  * @example 
