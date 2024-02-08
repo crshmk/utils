@@ -1,5 +1,13 @@
-// takes the window
-// returns params as an object
+/**
+  * @param {window} the window 
+  *
+  * @return {Object}
+  *
+  * @example
+  *   https://nikhuber-guitars.com/dealers?type=orca%2059&country=thailand"
+  *   getQueryParams(window)
+  *   // { type: 'orca 59', country: 'thailand'}
+**/
 import { 
   fromPairs, 
   isNil, 

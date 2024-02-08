@@ -7,11 +7,11 @@
  * 
  * @example 
  *   const [ints, setInts] = useState([1])
- *   const addInts = appendState(setInts) 
- *   addInts(2)
+ *   const concatInts = appendState(setInts) 
+ *   concatInts(2)
  *   // ints state becomes [1, 2]
  *
- *   addInts([3, 4])
+ *   concatInts([3, 4])
  *   // ints state becomes [1, 2, 3, 4]
  */
 import { append, concat, flip, ifElse, is } from 'ramda'

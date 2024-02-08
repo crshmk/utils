@@ -32,7 +32,7 @@
   *   */
 import { curry, defaultTo, lensPath, set, view } from 'ramda'
 
-// set leaf nodes to null to preserve shape for JSON.stringify
+// set leaf nodes to null to preserve shape for JSON 
 const nullOr = defaultTo(null)
 
 export const prune = curry(
