@@ -458,6 +458,10 @@ prependInts([3, 4])
 ### prune 
 > [[String]] => {a} => {a}
 
+use a shape to create a new object from a given object
+
+props not on the given object are set to null
+
 ```javascript 
 const axiosErrorPaths = [
   ['message'],
@@ -483,6 +487,52 @@ makeErrorResponse(axiosError)
 //    }
 //  }
 ```
+
+### pruneOr 
+
+> {a} => [[String]] => {a} => {a}
+
+prune with defaults 
+
+```javascript 
+const defaults = { 
+  one: { 
+    one1: 'default' 
+  } 
+}
+
+const desiredShape = [ 
+  ['one', 'one1'], 
+  ['two', 'two1'], 
+  ['four']
+]
+
+const toPrune = { 
+  two: { 
+    two1: 'incoming', 
+    two2: 'incoming' 
+  }, 
+  three: 'incoming' 
+}
+
+const pruneResponse = pruneOr(defaults, desiredShape)
+pruneResponse(toPrune)
+{ 
+  one: { 
+    one1: 'default'
+  },
+  { 
+    two: { 
+      two1: 'incoming'
+    } 
+  }, 
+  {
+    four: null 
+  }
+}
+
+```
+
 
 ### removeBy 
 
@@ -523,7 +573,7 @@ removeColor('blue', colors)
 
 Remove collection items in state by matching key/value or value
 
-The api is such that you just toss whatever object you have at the state to remove it 
+Just toss whatever object you have at the state to remove it 
 
 ```javascript 
 const fetchedGuitars = [

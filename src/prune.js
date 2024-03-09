@@ -1,5 +1,5 @@
 /**
-  * pluck potnetially nested props from an object
+  * pluck potentially nested props from an object
   *
   * @param Object 
   * @return Object 
