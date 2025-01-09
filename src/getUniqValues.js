@@ -1,9 +1,12 @@
+import { curry, map, pipe, prop, reject, uniq } from 'ramda'
+import { isAbsent } from './isAbsent'
+
 /**
- * get all values of a prop in a collection, without duplicates
+ * get unique values of a prop in a collection
  * 
- * @param {String} key targeted prop
- * @param {Array.<Object>} items collection 
- * @return {Array} unique list of values for this prop in the collection
+ * @param key targeted prop
+ * @param items collection of objects
+ * @return list of unique values for this prop in the collection
  * 
  * @example 
  *     const items = [
@@ -14,9 +17,6 @@
  *     getUniqValues('country', items)
  *     //=> ['Japan', 'Vietnam']
  */
-import { curry, map, pipe, prop, reject, uniq } from 'ramda'
-import { isAbsent } from './isAbsent'
-
 export const getUniqValues = curry((key, items) => 
   pipe(
     map(prop(key)),

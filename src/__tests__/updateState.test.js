@@ -3,7 +3,7 @@ import { adjustBy } from '../adjustBy'
 import { append } from 'ramda'
 
 describe('updateState', () => {
-  test('creates a state setter from a transform function and the setter from setState', () => {
+  test('creates a state setter from a transform function and the setter returned from useState', () => {
     const mockIntState = [1, 2, 3]
     const mockSetIntState = fn => fn(mockIntState)
     const appendState = updateState(append, mockSetIntState)

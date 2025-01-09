@@ -1,25 +1,24 @@
+import { curry, map, mergeDeepLeft, when } from 'ramda'
+import { propEq } from './propEq'
+
 /**
- * replace a collection item by matching a prop from the update
+ * partially update a collection item by matching a prop from the update
  * 
- * @param {String} propName prop to match an object in a list
- * @param {Object}  altered list iteration function that passes (item, index, list) to its callback
- * @param {Array} list of objects
+ * @param propToMatch prop by which an object will be identified; usually an id
+ * @param updates modifications to the matched object. includes the propToMatch
+ * @param list the collection in which a single object will be matched and updated
  * 
- * @return {Array} array of objects
- * 
- * const adjustById = adjustBy('id')
- * const state = [{ id: 1, val: 1 }, { id: 2, val: 2 }]
- * const update = { id: 2, val: 42 }
+ * @example 
+ *  const adjustById = adjustBy('id')
+ *  const state = [{ id: 1, val: 1 }, { id: 2, val: 2 }]
+ *  const update = { id: 2, val: 42 }
  * 
  * adjustById(update, state)
  * -> [{ id: 1, val: 1 }, { id: 2, val: 42 }]
  */
-
-import { curry, map, mergeDeepLeft, when } from 'ramda'
-import { propEq } from './propEq'
-export const adjustBy = curry((propName, item, list) => 
+export const adjustBy = curry((propToMatch, updates, list) => 
   map( 
-    when(propEq(propName, item[propName]), mergeDeepLeft(item)), 
+    when(propEq(propToMatch, updates[propToMatch]), mergeDeepLeft(updates)), 
     list
   )
 )

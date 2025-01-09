@@ -1,11 +1,22 @@
+import { curry, keys, pipe, join, replace } from 'ramda'
+
+const makeRegex = fragmentsToReplace => 
+  new RegExp(fragmentsToReplace, 'g')
+
+const getRegex = pipe(
+  keys, 
+  join('|'),
+  makeRegex
+)
+
 /**
- * maps replacement options over a string
+ * map replacements over a string
  * 
- * @param {Object} replacements the map of items to match and replace
- * @param {String} str the string to be transformed
+ * @param replacements the map of items to match (key) and replace (value)
+ * @param str the string to be transformed
+ * @return transformed string
  * 
- * @return {String} transformed string
- * 
+ * @example
  * const mapInts = {
  *   one: '1',
  *   two: '2',
@@ -14,10 +25,7 @@
  * const replaceInts = mapReplace(mapInts)
  * replaceInts('oneandtwoandthree') -> '1and2and3'
  */
-import { curry } from 'ramda'
-
 export const mapReplace = curry((replacements, str) => {
-  const fragmentsToReplace = Object.keys(replacements).join('|')
-  const regex = new RegExp(fragmentsToReplace, 'g')
-  return str.replace(regex, match => replacements[match])
+  const regex = getRegex(replacements)
+  return replace(regex, match => replacements[match], str)
 })

@@ -1,14 +1,3 @@
-/**
-  * returns an array of strings representing the route fragments, without the leading "/"
-  *
-  * @param window the window object 
-  * @return Array<String>
-  *
-  * @example 
-  *   'https://www.mesaboogie.com/en-US/Amp/?model=triple-rectifier'
-  *   getRouteFragments(window)
-  *   // ['en-US', 'Amp']
-*/ 
 import { 
   either, 
   isEmpty, 
@@ -22,6 +11,17 @@ import {
 
 const isNotFragment = either(startsWith('?'), isEmpty)
 
+/**
+  * list of route fragments, without the leading "/"
+  *
+  * @param window the window object 
+  * @return list of route fragments
+  *
+  * @example 
+  *   'https://www.mesaboogie.com/en-US/Amp/?model=triple-rectifier'
+  *   getRouteFragments(window)
+  *   // ['en-US', 'Amp']
+*/ 
 export const getRouteFragments = pipe(
   path(['location', 'pathname']),
   split('/'),

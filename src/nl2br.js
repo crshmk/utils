@@ -1,8 +1,9 @@
 /**
   * insert <br /> tags into a value intended for a text node 
+  * note: needs keys in the <br /> tags
   *
-  * @param String 
-  * @param Array<String | <br />>
+  * @param string with line breaks 
+  * @return text with <br /> tags for the breaks 
   *
   * @example 
   *   const description = `top line  

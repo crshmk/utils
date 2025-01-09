@@ -1,0 +1,11 @@
+.git/
+node_modules/
+src/
+.babelrc 
+.gitignore 
+jest.config.js 
+package-lock.json
+rollup.config.js
+tsconfig.json 
+*.tgz
+package 

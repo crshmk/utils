@@ -1,8 +1,8 @@
 /**
-  * pluck potentially nested props from an object
+  * pluck potentially nested props from an object; retain shape
   *
-  * @param Object 
-  * @return Object 
+  * @param obj 
+  * @return pruned object 
   *
   * @example 
   *
@@ -29,7 +29,8 @@
   *   //      data: 'response data'
   *   //    }
   *   //  }
-  *   */
+  *   
+  */
 import { curry, defaultTo, lensPath, set, view } from 'ramda'
 
 // set leaf nodes to null to preserve shape for JSON 

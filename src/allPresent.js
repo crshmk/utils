@@ -1,15 +1,11 @@
+import { all } from 'ramda'
+import { isPresent } from './isPresent'
+
 /**
-  *  @param {Array} 
-  *
-  *  @return {Boolean} 
-  *  
+  * @example
   *  allPresent([42], {one: 1}, 'x'])
   *  // true 
   *  allPresent([[], {one: 1}, 'x'])
   *  // false  
 **/
-import { all } from 'ramda'
-
-import { isPresent } from './isPresent'
-
 export const allPresent = all(isPresent)

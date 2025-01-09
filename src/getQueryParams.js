@@ -1,13 +1,3 @@
-/**
-  * @param {window} the window 
-  *
-  * @return {Object}
-  *
-  * @example
-  *   https://nikhuber-guitars.com/dealers?type=orca%2059&country=thailand"
-  *   getQueryParams(window)
-  *   // { type: 'orca 59', country: 'thailand'}
-**/
 import { 
   fromPairs, 
   isNil, 
@@ -21,6 +11,15 @@ import {
 
 const removeEmptyQuery = reject(isNil)
 
+/**
+  * @param window 
+  * @return object of query params
+  *
+  * @example
+  *   `https://nikhuber-guitars.com/dealers?type=orca%2059&country=thailand`
+  *   getQueryParams(window)
+  *   // { type: 'orca 59', country: 'thailand'}
+**/
 export const getQueryParams = pipe(
   path(['location', 'search']),
   tail,

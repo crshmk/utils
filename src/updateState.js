@@ -1,5 +1,9 @@
+import { apply, curry } from 'ramda'
+
 /**
- * creates a state setter from a transform function and the setter from setState 
+ * creates a state setter from 
+ * - a transform function 
+ * - the setter from useState 
  *
  * @param fn Function variable arity function to transform the state; (...args, currentState) => newState
  * @param setState Function the setter returned from useState 
@@ -25,9 +29,7 @@
  *  updateVal({id:1, val: 999})
  *  // vals state becomes [{id: 1, val: 999}, {id: 2, val: 2}]
  */
-import { apply, curry } from 'ramda'
-
-export const updateState = curry((fn, setState) => (...args) =>
+export const updateState = curry(curry((fn, setState) => (...args) =>
   setState(currentState => apply(fn, [...args, currentState]))
-)
+))
 

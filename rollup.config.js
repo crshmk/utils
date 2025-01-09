@@ -1,22 +1,44 @@
-import babel from 'rollup-plugin-babel'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import { uglify } from 'rollup-plugin-uglify'
+import babel from '@rollup/plugin-babel'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript'
+import copy from 'rollup-plugin-copy'
+import dts from 'rollup-plugin-dts'
 
 export default {
-    input: './src/index.js',
-    output: {
-        file: './dist/utils.min.js',
-        format: 'cjs',
-        name: 'bundle'
+  input: './src/index.js',
+  output: [
+    {
+      file: './dist/index.mjs',
+      format: 'esm',
+      name: 'bundle'
     },
-    plugins: [
-        babel({
-            exclude: 'node_modules/**'
-        }),
-        resolve(),
-        commonjs(),
-        uglify()
-    ],
-    external: ['ramda', 'react']
+    {
+      file: './dist/index.cjs',
+      format: 'cjs',
+      name: 'bundle'
+    }
+  ],
+  plugins: [
+    typescript({
+      tsconfig: './tsconfig.json', 
+      declaration: true,
+      declarationDir: './dist', 
+      rootDir: './src',
+    }),
+    babel({
+      babelHelpers: 'bundled', 
+      exclude: 'node_modules/**',
+    }),
+    resolve(),
+    commonjs(),
+    terser(),
+    copy({
+      targets: [
+        { src: 'src/index.d.ts', dest: 'dist' }
+      ]
+    })
+  ],
+  external: ['ramda']
 }

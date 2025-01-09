@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declarationDir": "./dist",
+    "emitDeclarationOnly": true,
+    "rootDir": "./src",
+    "target": "esNext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}
