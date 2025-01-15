@@ -405,7 +405,7 @@ export function propEq<K extends keyof T, T>(
 ): boolean
 
 
-export function propEq<K, T>(name: K, value: T[K]): (obj: T) => boolean 
+export function propEq<K extends keyof T, T>(name: K, value: T[K]): (obj: T) => boolean 
 
 export function propEq<K extends string | number | symbol>(name: K): {
   <V>(value: V): <T>(obj: Record<K, T>) => boolean

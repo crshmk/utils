@@ -4,7 +4,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 import copy from 'rollup-plugin-copy'
-import dts from 'rollup-plugin-dts'
 
 export default {
   input: './src/index.js',
@@ -40,5 +39,5 @@ export default {
       ]
     })
   ],
-  external: ['ramda']
+  external: ['ramda', 'react']
 }
