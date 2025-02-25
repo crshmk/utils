@@ -1,6 +1,6 @@
 {
   "name": "ramjam",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Functional JavaScript utilities that extend Ramda",
   "repository": "crshmk/utils",
   "main": "./dist/index.cjs",

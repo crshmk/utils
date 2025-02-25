@@ -228,7 +228,7 @@ export default useQueryParams
 
 ### getRouteFragments
 
-list of route fragments without the leading "/"
+list of route fragments
 
 ```javascript
 // 'https://www.mesaboogie.com/en-US/Amp/?model=triple-rectifier'

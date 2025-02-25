@@ -1,5 +1,19 @@
 import { Path } from 'ramda'
 
+export type Empty<T> = 
+  T extends Array<infer U> ? [] : 
+  T extends object ? Record<string, never> : 
+  T extends string ? '' : 
+  never
+
+export type MaybeEmpty<T> = T | Empty<T>
+
+export type Absence = null | undefined | '' | [] | Record<string, never>
+
+export type Absent<T> = Empty<T> | Extract<T, Absence>
+
+export type MaybeAbsent<T> = T | Absent<T>
+
 /**
  * partially update a collection item by matching a prop from the update
  * 
@@ -38,7 +52,8 @@ export function adjustBy<K extends keyof T>(propToMatch: K): {
  *  allAbsent([[], {one: 1}, ''])
  *  // false
  */
-export function allAbsent<T>(array: T[]): boolean
+//export function allAbsent<T>(array: T[]): array is T[] & (T extends Emptiness ? Emptiness : T)[];
+export function allAbsent<T>(array: T[]): array is (T & Emptiness)[]
 
 
 /**
@@ -48,7 +63,7 @@ export function allAbsent<T>(array: T[]): boolean
  *  allAbsent([[], {one: 1}, ''])
  *  // false
  */
-export function allPresent<T>(array: T[]): boolean
+export function allPresent<T>(array: T[]): array is Exclude<Absence>[]
 
 /**
   * @example
@@ -57,7 +72,7 @@ export function allPresent<T>(array: T[]): boolean
   *  anyAbsent([[], {one: 1}, 'x'])
   *  // true  
 **/
-export function anyAbsent<T>(array: T[]): boolean
+export function anyAbsent<T>(array: T[]): array is T[] & (T extends Absence ? never : T)[]
 
 /**
   *  anyPresent([], {}, ''])
@@ -65,7 +80,7 @@ export function anyAbsent<T>(array: T[]): boolean
   *  anyPresent([[], {one: 1}, ''])
   *  // true   
 **/
-export function anyPresent<T>(array: T[]): boolean
+export function anyPresent<T>(array: T[]): array is T[] & (T extends Absence ? T : never)[]
 
 /**
  * @param target value in list to be matched by Ramda's equals -> https://ramdajs.com/docs/#equals 
@@ -189,7 +204,7 @@ export function flatPick<T, U>(
   obj: T
 ): U
 
-export function flatPick<T, U>(paths: Path[]): (obj: T) => U;
+export function flatPick<T, U>(paths: Path[]): (obj: T) => U
 
 /**
   * @param window 
@@ -203,7 +218,7 @@ export function flatPick<T, U>(paths: Path[]): (obj: T) => U;
 export function getQueryParams<T>(window: Window): T
 
 /**
-  * list of route fragments, without the leading "/"
+  * list of route fragments
   *
   * @param window the window object 
   * @return list of route fragments
@@ -213,7 +228,7 @@ export function getQueryParams<T>(window: Window): T
   *   getRouteFragments(window)
   *   // ['en-US', 'Amp']
 */ 
-export function getRouteFragments<T>(window: Window): Partial<T>
+export function getRouteFragments(window: Window): string[]
 
 /**
  * get unique values of a prop in a collection
@@ -253,7 +268,7 @@ export function getUniqValues<K extends string>(key: K): (items: Record<K, unkno
  *  isAbsent(false) // <-- emptiness; not truthiness (not intended for bools)
  *  // false
 **/
-export function isAbsent(value: any): boolean
+export function isAbsent(x: any): x is Absent
 
 /**
  * @example 
@@ -270,7 +285,7 @@ export function isAbsent(value: any): boolean
  * isPresent(undefined)
  * // false
 **/
-export function isPresent(value: any): boolean
+export function isPresent<T>(x: T): x is Exclude<Absent>
 
 /**
  * make query string from object, prepended by '?'
@@ -317,7 +332,7 @@ export function makeQueryParams(
  * //    }
  * // }
  */
-export function mapKeys<T>(
+export function mapKeys(
   transform: (key: string) => string
 ): (obj: Record<string, any>) => Record<string, any>
 
@@ -379,7 +394,7 @@ export function nl2br(text: string): (string | JSX.Element)[]
 /**
  * complement of `isEmpty`
  */
-export function notEmpty(value: any): boolean
+export function notEmpty<T>(x: T): x is T 
 
 /**
  * prepend item or array of items to state arrays 
