@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "declarationDir": "./dist",
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "rootDir": "./src",
     "target": "esNext",
     "module": "esnext",

@@ -4,22 +4,26 @@
 
 ### adjustBy
 
-identify a collection item and merge updates
+merge partial updates by matching prop
 
 ```javascript
-const adjustById = adjustBy('id')
+const adjustById = adjustBy<'id'>('id')
 
-const items = [
+const state: Item[] = [
   { id: 1, x: 1, y: 1 },
   { id: 2, x: 2, y: 2 }
 ]
 
 const update = { id: 2, x: 42 }
-adjustById(update, items)
+adjustById<Item>(update, state)
 // [
 //  { id: 1, x: 1, y: 1 },
 //  { id: 2, x: 42, y: 2 }
 //]
+
+const adjustState = adjustBy<'id', Item>('id', update)
+const newState = adjustBy<'id', Item>('id', update, state)
+
 ```
 
 ### allAbsent
@@ -102,7 +106,7 @@ append item or array of items to state
 ```javascript
 const usePedals = () => {
   const [pedals, setPedals] = useState(['fuzz'])
-  const addPedals = appendState(setPedals)
+  const addPedals = appendState<PedalType>(setPedals)
   return { addPedals, pedals }
 }
 ```
@@ -123,7 +127,7 @@ camelToSnake('oneTwoThree')
 ```
 
 ```javascript
-const camelKeysToSnake = mapKeys(camelToSnake)
+const camelKeysToSnake = mapKeys<Prev, Next>(camelToSnake)
 
 const user = {
   familyName: '',
@@ -144,7 +148,7 @@ augment an object by applying a function to it
 ```javascript
 const sumValues = pipe(values, sum)
 
-const extendSum = extend(sumValues, 'sum') 
+const extendSum = extend<Prev, 'sum'>(sumValues, 'sum') 
 
 extendSum({ one: 1, two: 2 })
 // { one: 1, two: 2, sum: 3 }
@@ -177,7 +181,7 @@ const axiosErrorPaths = [
   ['response', 'data']
 ]
 
-const makeErrorResponse = flatPick(axiosErrorPaths)
+const makeErrorResponse = flatPick<AxiosError, ErrorResponse>(axiosErrorPaths)
 
 const onError = axiosError => {
   const response = makeErrorResponse(axiosError)
@@ -213,10 +217,10 @@ import { getQueryParams } from 'utils'
 
 const useQueryParams = () => {
   const { search } = useLocation()
-  const [queryParams, setQueryParams] = useState({})
+  const [queryParams, setQueryParams] = useState<QueryParams>({})
 
   useEffect(() => {
-    const newQueryParams = getQueryParams(window)
+    const newQueryParams = getQueryParams<QueryParams>(window)
     setQueryParams(newQueryParams)
   }, [search])
 
@@ -242,7 +246,7 @@ getRouteFragments(window)
 unique values of a prop in a collection
 
 ```javascript
-const guitars = [
+const guitars: Guitar[] = [
   { id: 1, make: 'Gibson', pickup: 'PAF' },
   { id: 2, make: 'Gibson', pickup: '57 Classic' },
   { id: 3, make: 'Fender', pickup: 'Lace Sensor' }
@@ -250,7 +254,7 @@ const guitars = [
 
 const getBrandOptions = getUniqValues('make')
 
-getBrandOptions(guitars)
+getBrandOptions<Guitar>(guitars)
 // ['Gibson', 'Fender']
 ```
 
@@ -323,7 +327,7 @@ const gear = {
   }
 }
 
-const toUpperKeys = mapKeys(toUpper)
+const toUpperKeys = mapKeys<Prev, Next>(toUpper)
 
 toUpperKeys(gear)
 // {
@@ -363,8 +367,8 @@ merge state object updates
 
 ```javascript 
 const useUser = () => {
-  const [user, setUser] = useState({})
-  const updateUser = mergeState(setUser)
+  const [user, setUser] = useState<MaybeEmpty<User>>({})
+  const updateUser = mergeState<User>(setUser)
   return { updateUser, user }
 }
 ```
@@ -380,7 +384,7 @@ updateUser({ age: 43, points: 2 })
 ### nl2br 
 
 insert <br /> tags into a value intended for a text node
-> *needs keying solution
+> *needs key solution
 
 ```jsx
 const titles = `The Bends
@@ -404,7 +408,7 @@ prepend item or array of items to state arrays
 ```javascript
 const useInts = () => {
   const [ints, setInts] = useState([1])
-  const prependInts = prependState(setInts)
+  const prependInts = prependState<number>(setInts)
   return { ints, prependInts }
 }
 ```
@@ -426,6 +430,17 @@ propEq('color', 'blue', { color: 'blue' })
 //true
 ```
 
+```javascript 
+// these will type check without passing anything
+const idEq = propEq('_id')
+idEq('a')
+
+propEq('_id','a', item)
+
+// this signature requires the key and type passed
+const rr = propEq<'_id', Item>('_id', 'a')
+```
+
 
 ### prune 
 pluck potentially nested props from an object
@@ -444,7 +459,7 @@ const axiosErrorPaths = [
   ['response', 'data']
 ]
 
-const makeErrorResponse = prune(axiosErrorPaths)
+const makeErrorResponse = prune<AxiosError, ErrorResponse>(axiosErrorPaths)
 makeErrorResponse(axiosError)
 // {  
 //    message: 'Request failed with status code 502',
@@ -490,7 +505,7 @@ const toPrune = {
   three: 'incoming' 
 }
 
-const pruneResponse = pruneOr(defaults, desiredShape)
+const pruneResponse = pruneOr<AxiosError, ErrorResponse>(defaults, desiredShape)
 pruneResponse(toPrune)
 { 
   one: { 
@@ -521,17 +536,17 @@ const colors = [
   { id: 4, color: 'blue' }
 ]
    
-const removeById = removeBy('id')
+const removeById = removeBy<'id'>('id')
 const itemToRemove = { id: 2, color: 'green' }
 // this matches { id: 2 }
-removeById(itemToRemove, colors)
+removeById<Item>(itemToRemove, colors)
 // [
 //   { id: 1, color: 'red' }, 
 //   { id: 3, color: 'blue' }, 
 //   { id: 4, color: 'blue' }
 // ]
 
-const removeColor = removeBy('color')
+const removeBlueItems = removeBy<'color', Item>('color')
 // this matches { color: 'blue' }
 removeColor('blue', colors)
 // [
@@ -579,6 +594,12 @@ removeGuitarMake('Fender')
 // [{ id: 1, make: 'Gibson' }]
 ```
 
+```javascript 
+  removeStateBy<Guitar, 'id'>(setGuitars, 'id', { id: 1 })
+  removeStateBy<Guitar>(setGuitars)<'id'>('id', { id: 1 })
+  removeStateBy<Guitar>(setGuitars)<'id'>('id')({ id: 1 })
+```
+
 ### renameKeys 
 
 apply a transform function to each key in an object, recursively
@@ -598,7 +619,7 @@ const guitarKeyReplacements = {
   transduction: 'pickups'
 }
 
-const renameGuitarKeys = renameKeys(guitarKeyReplacements)
+const renameGuitarKeys = renameKeys<Prev, Next>(guitarKeyReplacements)
 renameGuitarKeys(guitar)
 // {
 //   id: 42,
@@ -694,7 +715,3 @@ updateGuitar({ status: 'used', make: 'Gibson' })
 // { id: 1, status: 'used', make: 'Gibson' }
 ```
 
-```javascript 
-
-
-```

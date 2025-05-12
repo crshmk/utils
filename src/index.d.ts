@@ -1,14 +1,15 @@
+import React from 'react'
 import { Path } from 'ramda'
 
 export type Empty<T> = 
   T extends Array<infer U> ? [] : 
-  T extends object ? Record<string, never> : 
+  T extends object ? Record<PropertyKey, never> : 
   T extends string ? '' : 
   never
 
 export type MaybeEmpty<T> = T | Empty<T>
 
-export type Absence = null | undefined | '' | [] | Record<string, never>
+export type Absence = null | undefined | '' | [] | Record<PropertyKey, never>
 
 export type Absent<T> = Empty<T> | Extract<T, Absence>
 
@@ -29,20 +30,29 @@ export type MaybeAbsent<T> = T | Absent<T>
  * adjustById(update, state)
  * -> [{ id: 1, val: 1 }, { id: 2, val: 42 }]
  */
-export function adjustBy<K extends keyof T, T extends Record<K, any>>(
+export function adjustBy<K extends keyof T, T extends Record<PropertyKey, any>>(
   propToMatch: K,
-  updates: { [P in K]: T[K] } & Partial<T>,
+  updates: Partial<Omit<T, K>> & Pick<T, K>,
   list: T[]
 ): T[]
 
-export function adjustBy<K extends keyof T, T extends Record<K, any>>(
+export function adjustBy<K extends keyof T, T extends Record<PropertyKey, any>>(
   propToMatch: K,
-  updates: { [P in K]: T[K] } & Partial<T>
+  updates: Partial<Omit<T, K>> & Pick<T, K>
 ): (list: T[]) => T[]
 
-export function adjustBy<K extends keyof T>(propToMatch: K): {
-  <T extends Record<K, any>>(updates: { [P in K]: T[K] } & Partial<T>): (list: T[]) => T[]
-  <T>(updates: T, list: T[]): T[]
+export function adjustBy<K extends string>(
+  propToMatch: string
+): {
+  <T extends Record<PropertyKey, any>>(updates: Partial<Omit<T, K>> & Pick<T, K>): (list: T[]) => T[]
+  <T extends Record<PropertyKey, any>>(updates: Partial<Omit<T, K>> & Pick<T, K>, list: T[]): T[]
+}
+
+export function adjustBy<K extends keyof T, T extends Record<PropertyKey, any>>(
+  propToMatch: string
+): {
+  (updates: Partial<Omit<T, K>> & Pick<T, K>): (list: T[]) => T[]
+  (updates: Partial<Omit<T, K>> & Pick<T, K>, list: T[]): T[]
 }
 
 /**
@@ -54,7 +64,6 @@ export function adjustBy<K extends keyof T>(propToMatch: K): {
  */
 //export function allAbsent<T>(array: T[]): array is T[] & (T extends Emptiness ? Emptiness : T)[];
 export function allAbsent<T>(array: T[]): array is (T & Emptiness)[]
-
 
 /**
  * @example 
@@ -135,18 +144,18 @@ export function camelToSnake(camelCasedString: string): string
  *   extendSum({ one: 1, two: 2 })
  *   // { one: 1, two: 2, sum: 3 }
  */
-export function extend<T extends Record<string, any>, K extends string>(
+export function extend<T extends Record<PropertyKey, any>, K extends string>(
   fn: (obj: T) => any,
   key: K,
   obj: T
 ): T & Record<K, any>
 
-export function extend<T extends Record<string, any>, K extends string>(
+export function extend<T extends Record<PropertyKey, any>, K extends string>(
   fn: (obj: T) => any,
   key: K
 ): (obj: T) => T & Record<K, any>
 
-export function extend<T extends Record<string, any>>(
+export function extend<T extends Record<PropertyKey, any>>(
   fn: (obj: T) => any
 ): <K extends string>(key: K) => (obj: T) => T & Record<K, any>
 
@@ -170,7 +179,7 @@ export function extend<T extends Record<string, any>>(
  *   const user = await getUser()
  *   // user || {}
  */
-export function first<T>(array: T[] | undefined): T | Record<string, never>
+export function first<T>(array: T[] | undefined): T | Record<PropertyKey, never>
 
 /**
  * - plucks potentially nested props from an object and flattens the result 
@@ -246,12 +255,18 @@ export function getRouteFragments(window: Window): string[]
  *     getUniqValues('country', items)
  *     //=> ['Japan', 'Vietnam']
  */
-export function getUniqValues<K extends string>(
+export function getUniqValues<K extends keyof T, T>(
   key: K,
-  items: Record<K, unknown>[]
-): unknown[]
+  items: (Partial<Omit<T, K>> & Pick<T, K>)[]
+): T[K][]
 
-export function getUniqValues<K extends string>(key: K): (items: Record<K, unknown>) => unknown[]
+export function getUniqValues<K extends keyof T, T>(
+  key: K
+): (items: (Partial<Omit<T, K>> & Pick<T, K>)[]) => T[K][]
+
+export function getUniqValues<K extends keyof T>(
+  key: K
+): <T>(items: (Partial<Omit<T, K>> & Pick<T, K>)[]) => T[K][]
 
 /**
  * @example 
@@ -268,7 +283,7 @@ export function getUniqValues<K extends string>(key: K): (items: Record<K, unkno
  *  isAbsent(false) // <-- emptiness; not truthiness (not intended for bools)
  *  // false
 **/
-export function isAbsent(x: any): x is Absent
+export function isAbsent(x: any): x is null | undefined | "" | [] | Record<PropertyKey, never> 
 
 /**
  * @example 
@@ -285,7 +300,7 @@ export function isAbsent(x: any): x is Absent
  * isPresent(undefined)
  * // false
 **/
-export function isPresent<T>(x: T): x is Exclude<Absent>
+export function isPresent<T>(x: T): x is Exclude<any, Absence>
 
 /**
  * make query string from object, prepended by '?'
@@ -303,7 +318,7 @@ export function isPresent<T>(x: T): x is Exclude<Absent>
  * // ?guitar=Leo%20Nocentelli&keyboard=Art%20Neville
  */
 export function makeQueryParams(
-  params: Record<string, string>
+  params: Record<PropertyKey, string>
 ): string
 
 /**
@@ -332,9 +347,9 @@ export function makeQueryParams(
  * //    }
  * // }
  */
-export function mapKeys(
-  transform: (key: string) => string
-): (obj: Record<string, any>) => Record<string, any>
+export function mapKeys<T, U>(
+  transform: (key: keyof T) => string
+): (obj: T) => U
 
 /**
  * map replacements over a string
@@ -352,10 +367,10 @@ export function mapKeys(
  * const replaceInts = mapReplace(mapInts)
  * replaceInts('oneandtwoandthree') -> '1and2and3'
  */
-export function mapReplace(replacements: Record<string, string>, str: string): string
+export function mapReplace(replacements: Record<PropertyKey, string>, str: string): string
 
 export function mapReplace(
-  replacements: Record<string, string>
+  replacements: Record<PropertyKey, string>
 ): (str: string) => string
 
 /**
@@ -411,18 +426,17 @@ export function notEmpty<T>(x: T): x is T
  *   prependInts([3, 4])
  *   // ints state becomes [3, 4, 2, 1]
  */
-export function prependState(setState: React.Dispatch<React.SetStateAction<any[]>>): (items: any | any[]) => void
+export function prependState<T>(setState: React.Dispatch<React.SetStateAction<T[]>>): (items: T | T[]) => void
 
 export function propEq<K extends keyof T, T>(
-  name: K,
+  key: K,
   val: T[K],
   obj: T
 ): boolean
 
+export function propEq<K extends keyof T, T>(key: K, value: T[K]): (obj: T) => boolean 
 
-export function propEq<K extends keyof T, T>(name: K, value: T[K]): (obj: T) => boolean 
-
-export function propEq<K extends string | number | symbol>(name: K): {
+export function propEq<K extends PropertyKey>(key: K): {
   <V>(value: V): <T>(obj: Record<K, T>) => boolean
   <V, T>(value: V, obj: Record<K, T>): boolean 
 }
@@ -532,17 +546,29 @@ export function pruneOr<T, U>(
  *     const newState = removeByColor('blue', state)
  *     // [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
  */
-export function removeBy<T>(
-  k: keyof T,
-  toRemove: { [P in K]: T[K] } & Partial<T>,
+export function removeBy<K extends keyof T, T extends Record<PropertyKey, any>>(
+  propToMatch: K,
+  itemToRemove: Partial<Omit<T, K>> & Pick<T, K>,
   items: T[]
 ): T[]
 
-export function removeBy<T>(key: keyof T, toRemove: { [P in K]: T[K] } & Partial<T>): (items: T[]) => T[]
+export function removeBy<K extends keyof T, T extends Record<PropertyKey, any>>(
+  propToMatch: K,
+  itemToRemove: Partial<Omit<T, K>> & Pick<T, K>
+): (items: T[]) => T[]
 
-export function removeBy<T>(key: keyof T): {
-  (key: keyof T): (toRemove: T[keyof T]) => T[]
-  (key: keyof T, toRemove: T[keyof T]): T[]
+export function removeBy<K extends string>(
+  propToMatch: string
+): {
+  <T extends Record<PropertyKey, any>>(itemToRemove: Partial<Omit<T, K>> & Pick<T, K>): (items: T[]) => T[]
+  <T extends Record<PropertyKey, any>>(itemToRemove: Partial<Omit<T, K>> & Pick<T, K>, items: T[]): T[]
+}
+
+export function removeBy<K extends keyof T, T extends Record<PropertyKey, any>>(
+  propToMatch: string
+): {
+  (itemToRemove: Partial<Omit<T, K>> & Pick<T, K>): (items: T[]) => T[]
+  (itemToRemove: Partial<Omit<T, K>> & Pick<T, K>, items: T[]): T[]
 }
 
 /**
@@ -570,20 +596,20 @@ export function removeBy<T>(key: keyof T): {
  *     const removeByColor('blue', state)
  *     // state becomes [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
  */
-export function removeStateBy<T>(
+export function removeStateBy<T extends Record<PropertyKey, any>, K extends keyof T>(
   setState: React.Dispatch<React.SetStateAction<T[]>>,
-  k: keyof T,
-  toRemove: T[keyof T]
+  key: K,
+  itemToRemove: Partial<Omit<T, K>> & Pick<T, K>
 ): void
 
-export function removeStateBy<T>(
-  state: React.Dispatch<React.SetStateAction<T[]>>,
-  k: keyof T
-): (toRemove: T[keyof T]) => void
+export function removeStateBy<T extends Record<PropertyKey, any>, K extends keyof T>(
+  setState: React.Dispatch<React.SetStateAction<T[]>>,
+  key: K
+): (toRemove: Partial<Omit<T, K>> & Pick<T, K>) => void
 
-export function removeStateBy<T>(state: React.Dispatch<React.SetStateAction<T[]>>): {
-  (k: keyof T): (toRemove: T[keyof T]) => void
-  (k: keyof T, toRemove: T[keyof T]): void
+export function removeStateBy<T extends Record<PropertyKey, any>>(setState: React.Dispatch<React.SetStateAction<T[]>>): {
+  <K extends keyof T>(key: K): (toRemove: Partial<Omit<T, K>> & Pick<T, K>) => void
+  <K extends keyof T>(key: K, toRemove: Partial<Omit<T, K>> & Pick<T, K>): void
 }
 
 /**
@@ -594,9 +620,10 @@ export function removeStateBy<T>(state: React.Dispatch<React.SetStateAction<T[]>
  * 
  * @return object with renamed keys
  */
-export function renameKeys<T extends Record<string, any>>(
-  replacements: Record<keyof T, string>
-): (obj: T) => T
+export function renameKeys<T extends Record<PropertyKey, any>, U>(
+  replacements: { [K in keyof T]?: string }
+): (obj: T) => U
+
 
 /**
  * @param snake_cased_string 
@@ -633,7 +660,3 @@ export function snakeToCamel(snake_cased_string: string): string
  *  updateVal({id:1, val: 999})
  *  // vals state becomes [{id: 1, val: 999}, {id: 2, val: 2}]
  */
-export function updateState<T, U>(
-  fn: (...args: any[]) => (currentState: T) => U,
-  setState: React.Dispatch<React.SetStateAction<T>>
-): (...args: any[]) => void
