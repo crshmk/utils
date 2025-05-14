@@ -111,14 +111,18 @@ export function appendOrRemove<T>(target: T) : (list: T[]) => T[]
  * 
  * @example 
  *   const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
- *   appendOrRemoveBy({ color: 'blue' }, list)
+ *   appendOrRemoveBy('color', { color: 'blue' }, list)
  *   // list becomes [{ id: 2, color: 'green' }]
- *   appendOrRemoveBy({ id: 4, color: 'red' }, list)
+ *   appendOrRemoveBy('id', { id: 4, color: 'red' }, list)
  *   // list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
  */
-export function appendOrRemoveBy<T>(target: Partial<T>, list: T[]): T[]
+export function appendOrRemoveBy<K extends keyof T, T extends Record<PropertyKey, any>>(key: K, target: Partial<Omit<T, K>> & Pick<T, K>, list: T[]): T[]
 
-export function appendOrRemoveBy<T>(target: Partial<T>): (list: T[]) => T[]
+export function appendOrRemoveBy<K extends keyof T, T extends Record<PropertyKey, any>>(key: K, target: Partial<T>): (list: T[]) => T[]
+
+export function appendOrRemoveBy<K extends PropertyKey>(key: K): <T extends Record<K, any>>(target: Partial<Omit<T, K>> & Pick<T, K>, list: T[]) => T[]
+
+export function appendOrRemoveBy<K extends PropertyKey>(key: K): <T extends Record<K, any>>(target: Partial<Omit<T, K>> & Pick<T, K>) => (list: T[]) => T[]
 
 /**
  * curry state setter for a list to append item or array of items to state arrays 

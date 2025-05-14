@@ -7,21 +7,24 @@ import {
   whereEq,
 } from 'ramda'
 
+import { propEq } from './propEq'
+
 /**
  * @param target item to append or match for removal 
  * @return collection with item appended or all matching items removed
  * 
  * @example 
  *   const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
- *   appendOrRemoveBy({ color: 'blue' }, list)
+ *   appendOrRemoveBy('color', { color: 'blue' }, list)
  *   // list becomes [{ id: 2, color: 'green' }]
- *   appendOrRemoveBy({ id: 4, color: 'red' }, list)
+ *   const appendOrRemoveById = appendOrRemoveBy('id')
+ *   appendOrRemoveById({ id: 4, color: 'red' }, list)
  *   // list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
  */
-export const appendOrRemoveBy = curry((target, list) => 
+export const appendOrRemoveBy = curry((key, target, list) => 
   ifElse(
-    any(whereEq(target)),
-    reject(whereEq(target)),
+    any(propEq(key, target[key])),
+    reject(propEq(key, target[key])),
     append(target)
   )(list))
 

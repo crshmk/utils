@@ -101,14 +101,18 @@ const onClickCheckbox = value => {
 ```
 
 ### appendOrRemoveBy 
-toggle collection item 
+toggle collection item by matching key / value
 
 ```javascript
 const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
-appendOrRemoveBy({ color: 'blue' }, list)
+appendOrRemoveBy('color', { color: 'blue' }, list)
 // list becomes [{ id: 2, color: 'green' }]
-appendOrRemoveBy({ id: 4, color: 'red' }, list)
+appendOrRemoveBy('id', { id: 4, color: 'red' }, list)
 // list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
+```
+
+```javascript 
+const toggleItem = appendOrRemoveBy('id')
 ```
 
 ### appendState 
@@ -567,7 +571,7 @@ removeColor('blue', colors)
 
 ### removeStateBy 
 
-remove objects from a collection in state by matching a key / value
+remove objects from a collection in state by matching key / value
 
 ```javascript 
 const fetchedGuitars = [
