@@ -4,7 +4,7 @@
 
 ### adjustBy
 
-merge partial updates by matching prop
+merge partial updates to a collection item by matching key / value
 
 ```javascript
 const adjustById = adjustBy<'id'>('id')
@@ -21,7 +21,7 @@ adjustById<Item>(update, state)
 //  { id: 2, x: 42, y: 2 }
 //]
 
-const adjustState = adjustBy<'id', Item>('id', update)
+const updateItem = adjustBy<'id', Item>('id', update)
 const newState = adjustBy<'id', Item>('id', update, state)
 
 ```
@@ -71,10 +71,10 @@ const isSpinnerShowing = allAbsent([user, guitars, fetchError])
 ### anyPresent
 
 ```javascript
-anyPresent([['a'], {}, '']))
+anyPresent([['a'], {}, ''])
 // true
 
-anyPresent([[''], {}, '']))
+anyPresent([[''], {}, ''])
 // false
 ```
 
@@ -83,6 +83,7 @@ const isDashboardShowing = anyPresent([user, guitars])
 ```
 
 ### appendOrRemove
+toggle list item 
 
 ```javascript
 const state = ['one', 'two', 'three']
@@ -97,6 +98,17 @@ const onClickCheckbox = value => {
   const newSelections = appendOrRemove(value, selections)
   setSelections(newSelections)
 }
+```
+
+### appendOrRemoveBy 
+toggle collection item 
+
+```javascript
+const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
+appendOrRemoveBy({ color: 'blue' }, list)
+// list becomes [{ id: 2, color: 'green' }]
+appendOrRemoveBy({ id: 4, color: 'red' }, list)
+// list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
 ```
 
 ### appendState 
@@ -444,8 +456,6 @@ const rr = propEq<'_id', Item>('_id', 'a')
 
 ### prune 
 pluck potentially nested props from an object
-
-provide default values when a prop is absent 
 
 props not on the given object are set to null to keep them in json
 

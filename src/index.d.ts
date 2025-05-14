@@ -106,6 +106,21 @@ export function appendOrRemove<T>(target: T, list: T[]): T[]
 export function appendOrRemove<T>(target: T) : (list: T[]) => T[]
 
 /**
+ * @param target item to append or match for removal 
+ * @return collection with item appended or all matching items removed
+ * 
+ * @example 
+ *   const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
+ *   appendOrRemoveBy({ color: 'blue' }, list)
+ *   // list becomes [{ id: 2, color: 'green' }]
+ *   appendOrRemoveBy({ id: 4, color: 'red' }, list)
+ *   // list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
+ */
+export function appendOrRemoveBy<T>(target: Partial<T>, list: T[]): T[]
+
+export function appendOrRemoveBy<T>(target: Partial<T>): (list: T[]) => T[]
+
+/**
  * curry state setter for a list to append item or array of items to state arrays 
  *
  * @param setState the setter returned from useState 
