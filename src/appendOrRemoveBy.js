@@ -3,8 +3,7 @@ import {
   append,
   curry,
   reject,
-  ifElse,
-  whereEq,
+  ifElse
 } from 'ramda'
 
 import { propEq } from './propEq'

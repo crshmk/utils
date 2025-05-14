@@ -111,14 +111,56 @@ export function appendOrRemove<T>(target: T) : (list: T[]) => T[]
  * 
  * @example 
  *   const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
- *   appendOrRemoveBy({ color: 'blue' }, list)
+ *   appendOrRemoveBy('color', { color: 'blue' }, list)
  *   // list becomes [{ id: 2, color: 'green' }]
- *   appendOrRemoveBy({ id: 4, color: 'red' }, list)
+ *   appendOrRemoveBy('id', { id: 4, color: 'red' }, list)
  *   // list becomes [{ id: 2, color: 'green' }, { id: 4, color: 'red' }]
  */
-export function appendOrRemoveBy<T>(target: Partial<T>, list: T[]): T[]
+export function appendOrRemoveBy<K extends keyof T, T extends Record<PropertyKey, any>>(key: K, target: Partial<Omit<T, K>> & Pick<T, K>, list: T[]): T[]
 
-export function appendOrRemoveBy<T>(target: Partial<T>): (list: T[]) => T[]
+export function appendOrRemoveBy<K extends keyof T, T extends Record<PropertyKey, any>>(key: K, target: Partial<T>): (list: T[]) => T[]
+
+export function appendOrRemoveBy<K extends PropertyKey>(key: K): <T extends Record<K, any>>(target: Partial<Omit<T, K>> & Pick<T, K>, list: T[]) => T[]
+
+export function appendOrRemoveBy<K extends PropertyKey>(key: K): <T extends Record<K, any>>(target: Partial<Omit<T, K>> & Pick<T, K>) => (list: T[]) => T[]
+
+/**
+ * Remove objects from a collection in state by matching key / value.
+ * 
+ * @param setState - the setter returned from useState 
+ * @param key - key to match target in the collection
+ * @param target - item to match 
+ * 
+ * @example 
+ * const useItems = () => {
+ *   const [items, setItems] = useState([{ id: 1, shape: 'square', color: 'blue' }])
+ * 
+ *   const toggleItem = appendOrRemoveStateBy(setItems, 'id')
+ *   const toggleColor = appendOrRemoveStateBy(setItems, 'color')
+ * 
+ *   return { items, toggleItem, toggleColor }
+ * }
+ * 
+ * toggleItem({ id: 1, shape: 'square', color: 'blue' })
+ * // toggles the item with id 1 
+ * toggleColor({ color: 'blue' })
+ * // toggles all blue items
+ */
+export function appendOrRemoveStateBy<T extends Record<PropertyKey, any>, K extends keyof T>(
+  setState: React.Dispatch<React.SetStateAction<T[]>>,
+  key: K,
+  target: Partial<Omit<T, K>> & Pick<T, K>
+): void
+
+export function appendOrRemoveStateBy<T extends Record<PropertyKey, any>, K extends keyof T>(
+  setState: React.Dispatch<React.SetStateAction<T[]>>,
+  key: K
+): (target: Partial<Omit<T, K>> & Pick<T, K>) => void
+
+export function appendOrRemoveStateBy<T extends Record<PropertyKey, any>>(setState: React.Dispatch<React.SetStateAction<T[]>>): {
+  <K extends keyof T>(key: K): (target: Partial<Omit<T, K>> & Pick<T, K>) => void
+  <K extends keyof T>(key: K, target: Partial<Omit<T, K>> & Pick<T, K>): void
+}
 
 /**
  * curry state setter for a list to append item or array of items to state arrays 

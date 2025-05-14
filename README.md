@@ -101,7 +101,7 @@ const onClickCheckbox = value => {
 ```
 
 ### appendOrRemoveBy 
-toggle collection item by matching key / value
+toggle collection items by matching key / value
 
 ```javascript
 const list = [{ id: 1, color: 'blue' }, { id: 2, color: 'green' }, { id: 3, color: 'blue' }]
@@ -113,6 +113,25 @@ appendOrRemoveBy('id', { id: 4, color: 'red' }, list)
 
 ```javascript 
 const toggleItem = appendOrRemoveBy('id')
+```
+
+### appendOrRemoveStateBy
+toggle collection items in state
+
+```javascript 
+const useItems = () => {
+  const [items, setItems] = useState([{ id: 1, label: 'nice', color: 'blue' }])
+
+  const toggleItem = appendOrRemoveStateBy(setItems, 'id')
+  const toggleColor = appendOrRemoveStateBy(setItems, 'color')
+
+  return { items, toggleColor, toggleItem }
+}
+
+toggleItem({ id: 1, label: 'nice', color: 'blue' })
+// toggle item with id 1 
+toggleColor({color: 'blue'})
+// toggle all blue items
 ```
 
 ### appendState 
