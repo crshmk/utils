@@ -162,14 +162,14 @@ camelToSnake('oneTwoThree')
 ```
 
 ```javascript
-const camelKeysToSnake = mapKeys<Prev, Next>(camelToSnake)
+const toSqlKeys = mapKeys<Prev, Next>(camelToSnake)
 
 const user = {
   familyName: '',
   givenName: ''
 }
 
-const createUserQuery = camelKeysToSnake(user)
+const createUserQuery = toSqlKeys(user)
 // {
 //   family_name: '',
 //   given_name: ''
@@ -672,7 +672,7 @@ snakeToCamel('one_two_three')
 ```
 
 ```javascript
-const snakeKeysToCamel = mapKeys(snakeToCamel)
+const toJsKeys = mapKeys(snakeToCamel)
 
 const queryResult = {
   user_id: 42,
@@ -680,7 +680,7 @@ const queryResult = {
   family_name: ''
 }
 
-snakeKeysToCamel(queryResult)
+toJsKeys(queryResult)
 // {
 //   userId: 42,
 //   givenName: '',
