@@ -27,6 +27,6 @@ import { updateState } from './updateState'
  *     const removeByColor('blue', state)
  *     // state becomes [{ id: 1, color: 'red' }, { id: 2, color: 'green' }]
  */
-export const removeStateBy = curry((setState, k, toRemove) => 
-  updateState(removeBy(k, toRemove), setState)()
+export const removeStateBy = curry((setState, key, toRemove) => 
+  updateState(removeBy(key, toRemove), setState)()
 )

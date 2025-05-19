@@ -1,5 +1,7 @@
 ### [Ramda](https://ramdajs.com/docs/) extensions 
 
+with state utils for React
+
 ---
 
 ### adjustBy
@@ -418,7 +420,7 @@ updateUser({ age: 43, points: 2 })
 
 ### nl2br 
 
-insert <br /> tags into a value intended for a text node
+insert `<br />` tags into a value intended for a text node
 > *needs key solution
 
 ```jsx
@@ -466,14 +468,14 @@ propEq('color', 'blue', { color: 'blue' })
 ```
 
 ```javascript 
-// these will type check without passing anything
+// implicit typing ok
 const idEq = propEq('_id')
-idEq('a')
+idEq(42)
 
-propEq('_id','a', item)
+propEq('_id', 42, item)
 
-// this signature requires the key and type passed
-const rr = propEq<'_id', Item>('_id', 'a')
+// this signature requires explicit typing
+const isGreen = propEq<'color', Item>('color', 'green')
 ```
 
 
@@ -691,42 +693,9 @@ toJsKeys(queryResult)
 
 ### updateState 
 
-creates a state setter from 
- - a transform function 
- - the setter from useState 
+create a side effect to update state by [curring](https://github.com/crshmk/utils/blob/b3aec648636242ee6295667f59b337f4e8bda9bc/src/removeStateBy.js#L31) a transform function and a state setter
 
-pass: 
-- a transform function that takes the current state as its last argument and returns a modified state. You do not pass the state. 
-- the state setter 
-- arguments to be passed to the transform function before the current state
-
-You must curry the first two args to create a declarative function that updates the state as a side effect.
-
-```javascript 
-const appendState = updateState(append)
-const updateStateById = updateState(adjustBy('id'))
-
-const useUser = () => {
-  const [users, setUsers] = useState([])
-
-  const addUser = appendState(setUsers)
-  const updateUser = updateStateById(setUsers)
-
-  return { addUser, updateUser, user }
-}
-
-const { addUser, updateUser } = useUsers()
-
-addUser({ id: 1, age: 20 })
-addUser({ id: 2, age: 30 })
-updateUser({ id: 2, age: 31 })
-
-// users state becomes 
-// [
-//   { id: 1, age: 20 },
-//   { id: 2, age: 31 }
-// ] 
-```
+the [transform function](https://github.com/crshmk/utils/blob/b3aec648636242ee6295667f59b337f4e8bda9bc/src/updateState.js#L33) is of any arity, taking the state as the last param
 
 ```javascript 
 const mergeState = updateState(mergeDeepLeft)
