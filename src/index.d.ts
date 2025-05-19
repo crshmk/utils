@@ -201,20 +201,33 @@ export function camelToSnake(camelCasedString: string): string
  *   extendSum({ one: 1, two: 2 })
  *   // { one: 1, two: 2, sum: 3 }
  */
-export function extend<T extends Record<PropertyKey, any>, K extends string>(
-  fn: (obj: T) => any,
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, U>(
+  fn: (obj: T) => U,
   key: K,
   obj: T
-): T & Record<K, any>
+): T & Record<K, U>
 
-export function extend<T extends Record<PropertyKey, any>, K extends string>(
-  fn: (obj: T) => any,
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, U>(
+  fn: (obj: T) => U,
   key: K
-): (obj: T) => T & Record<K, any>
+): (obj: T) => T & Record<K, U>
+
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey>(
+  fn: (obj: T) => U,
+  key: K
+): <U>(obj: T) => T & Record<K, U>
+
+export function extend<T extends Record<PropertyKey, any>, K extends PropertyKey, U>(
+  fn: (obj: T) => U
+): (key: K) => (obj: T) => T & Record<K, U>
 
 export function extend<T extends Record<PropertyKey, any>>(
-  fn: (obj: T) => any
-): <K extends string>(key: K) => (obj: T) => T & Record<K, any>
+  fn: (obj: T) => U
+): <K extends PropertyKey, U>(key: K) => (obj: T) => T & Record<K, U>
+
+export function extend<T extends Record<PropertyKey, any>>(
+  fn: (obj: T) => U
+): <K extends PropertyKey>(key: K) => <U>(obj: T) => T & Record<K, U>
 
 /**
  * first item in a collection or an empty object  

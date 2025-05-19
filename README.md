@@ -183,7 +183,7 @@ augment an object by applying a function to it
 ```javascript
 const sumValues = pipe(values, sum)
 
-const extendSum = extend<Prev, 'sum'>(sumValues, 'sum') 
+const extendSum = extend<Prev, 'sum', number>(sumValues, 'sum') 
 
 extendSum({ one: 1, two: 2 })
 // { one: 1, two: 2, sum: 3 }
