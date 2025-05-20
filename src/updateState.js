@@ -1,33 +1,25 @@
 import { apply, curry } from 'ramda'
 
 /**
- * creates a state setter from 
- * - a transform function 
- * - the setter from useState 
+ * creates a side effect to update state by currying a transform function and a state setter
+ * the transform function is of any arity, and will be handed the state as the last arg 
  *
- * @param fn Function variable arity function to transform the state; (...args, currentState) => newState
- * @param setState Function the setter returned from useState 
- * @param ...args variable arity args applied to the transform function, preceding the current state in its signature
+ * @param fn variable arity function to transform the state; (...args, currentState) => newState
+ * @param setState setter returned from useState 
+ * @param ...args variable arity args applied to the transform function
  *
  * @example 
- * const appendState = updateState(append)
- * const adjustById = adjustBy('id')
+ *  * const useGuitar = () => {
+ *   const [guitar, setGuitar] = useState({})
+ *   const updateGuitar = updateState(mergeDeepLeft, setGuitar)
+ *   return { guitar, updateGuitar }
+ * }
  * 
- * const Component = () => {
- *   const [ints, setInts] = useState([1,2])
- *   const [chars, setChars] = useState(['a', 'b'])
- *   const [vals, setVals] = useState([{id: 1, val: 1}, {id: 2, val: 2}])
- *
- *   const addInt = appendState(setInts)
- *   const addChar = appendState(setChars)
- *   const updateVal = updateState(adjustById, setVals)
-  ... 
- *  addInt(3)
- *  // ints state becomes [1, 2, 3]
- *  addChar('c')
- *  // chars state becomes ['a', 'b', 'c']
- *  updateVal({id:1, val: 999})
- *  // vals state becomes [{id: 1, val: 999}, {id: 2, val: 2}]
+ * const { updateGuitar } = useGuitar()
+ * updateGuitar({ id: 1, status: 'new' })
+ * updateGuitar({ status: 'used', make: 'Gibson' })
+ * // guitar state becomes 
+ * // { id: 1, status: 'used', make: 'Gibson' }
  */
 export const updateState = curry(curry((fn, setState) => (...args) =>
   setState(currentState => apply(fn, [...args, currentState]))

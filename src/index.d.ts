@@ -730,3 +730,11 @@ export function snakeToCamel(snake_cased_string: string): string
  *  updateVal({id:1, val: 999})
  *  // vals state becomes [{id: 1, val: 999}, {id: 2, val: 2}]
  */
+export function updateState<T, Args extends any[]>(
+  fn: (...args: [...Args, T]) => T, 
+  setState: React.Dispatch.SetStateAction<T>
+): (...args: Args) => void
+
+export function updateState<T, Args extends any[]>(
+  fn: (...args: [...Args, T]) => T
+): (setState: React.Dispatch.SetStateAction<T>) => (...args: Args) => void

@@ -695,24 +695,21 @@ toJsKeys(queryResult)
 
 create a side effect to update state by [curring](https://github.com/crshmk/utils/blob/b3aec648636242ee6295667f59b337f4e8bda9bc/src/removeStateBy.js#L31) a transform function and a state setter
 
-the [transform function](https://github.com/crshmk/utils/blob/b3aec648636242ee6295667f59b337f4e8bda9bc/src/updateState.js#L33) is of any arity, taking the state as the last param
+the [transform function](https://github.com/crshmk/utils/blob/b3aec648636242ee6295667f59b337f4e8bda9bc/src/updateState.js#L33) is of arity one or greater; previous state is the last arg
 
 ```javascript 
-const mergeState = updateState(mergeDeepLeft)
+type TransformArgs = [Partial<Guitar>]
 
 const useGuitar = () => {
-  const [guitar, setGuitar] = useState({})
-  
-  const updateGuitar = mergeState(setGuitar)
-
+  const [guitar, setGuitar] = useState<MaybeEmpty<Guitar>>({})
+  const updateGuitar = updateState<Guitar, TransformArgs>(mergeDeepLeft, setGuitar)
   return { guitar, updateGuitar }
 }
 
 const { updateGuitar } = useGuitar()
-
+// const updateGuitar: (args_0: Partial<Guitar>) => void
 updateGuitar({ id: 1, status: 'new' })
 updateGuitar({ status: 'used', make: 'Gibson' })
-
 // guitar state becomes 
 // { id: 1, status: 'used', make: 'Gibson' }
 ```
